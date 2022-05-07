@@ -1,5 +1,5 @@
 public class Memory {
-    int bootstrapper[] = new int[] {};
+    int[] bootstrapper = new int[] {};
     byte memory[] = new byte[65536];
 
     public Memory() {
@@ -26,7 +26,7 @@ public class Memory {
     public byte read(short addr) {
         return read(uWord(addr));
     }
-    public short readWord(int addr) {
+    private short readWord(int addr) {
         if(addr < 0 || addr > 65535)
             throw new IllegalArgumentException("Address out of range.");
         return (short)(read(addr) | (read(addr + 1) << 8));

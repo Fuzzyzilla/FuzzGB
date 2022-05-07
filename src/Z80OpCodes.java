@@ -62,7 +62,7 @@ public class Z80OpCodes {
         };
         //LD SP, nn
         opcodes[0x31] = (CPUState c, Memory m) -> {
-            c.sp = m.readWord(c.pc + 1);
+            c.sp = m.readWord((short)(c.pc + 1));
             c.pc+=3;
         };
         //LDD (HL), A
@@ -99,7 +99,7 @@ public class Z80OpCodes {
         opcodes[0xCD] = (CPUState c, Memory m) -> {
             m.writeWord(c.pc, c.sp);
             c.sp += 2;
-            c.pc = m.readWord(c.pc + 1);
+            c.pc = m.readWord((short)(c.pc + 1));
         };
         //LDH (0xff00 + n), A
         opcodes[0xe0] = (CPUState c, Memory m) -> {
