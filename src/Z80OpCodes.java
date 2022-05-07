@@ -37,10 +37,10 @@ public class Z80OpCodes {
             c.e = m.read(c.pc + 2);
             c.pc += 3;
         };
-        //LD SP, nn
+        //INC DE
         opcodes[0x13] = (CPUState c, Memory m) -> {
-            c.sp = m.readWord(c.pc + 1);
-            c.pc+=3;
+            c.incDE();
+            c.pc++;
         };
         //LD A, (DE)
         opcodes[0x1a] = (CPUState c, Memory m) -> {
@@ -60,6 +60,11 @@ public class Z80OpCodes {
             c.l = m.read(c.pc + 2);
             c.pc += 3;
         };
+        //LD SP, nn
+        opcodes[0x31] = (CPUState c, Memory m) -> {
+            c.sp = m.readWord(c.pc + 1);
+            c.pc+=3;
+        };
         //LDD (HL), A
         opcodes[0x32] = (CPUState c, Memory m) -> {
             m.write(c.a, c.getHL());
@@ -76,6 +81,11 @@ public class Z80OpCodes {
             m.write(c.a, c.getHL());
             c.pc++;
         };
+        //LD A, E
+        opcodes[0x7b] = (CPUState c, Memory m) -> {
+            c.a = c.e;
+            c.pc++;
+        };
         //XOR A
         opcodes[0xaf] = (CPUState c, Memory m) -> {
             c.a = 0;
@@ -87,7 +97,9 @@ public class Z80OpCodes {
         };
         //CALL nn
         opcodes[0xCD] = (CPUState c, Memory m) -> {
-
+            m.writeWord(c.pc, c.sp);
+            c.sp += 2;
+            c.pc = m.readWord(c.pc + 1);
         };
         //LDH (0xff00 + n), A
         opcodes[0xe0] = (CPUState c, Memory m) -> {
@@ -96,8 +108,12 @@ public class Z80OpCodes {
         };
         //LDH (0xff00 + C), A
         opcodes[0xe2] = (CPUState c, Memory m) -> {
-            m.write(c.a, 0xff00 + m.uByte(m.c));
+            m.write(c.a, 0xff00 + m.uByte(c.c));
             c.pc++;
+        };
+        //CP n
+        opcodes[0xfe] = (CPUState c, Memory m) -> {
+            //TODO:
         };
     }
 }
