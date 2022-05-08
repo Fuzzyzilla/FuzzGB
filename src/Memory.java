@@ -28,7 +28,7 @@ public class Memory {
         return read(uWord(addr));
     }
     private short readWord(int addr) {
-        return (short)(((int)read(addr) | ((int)read(addr + 1) << 8)));
+        return BitTwiddling.glue(read(addr), read(addr + 1));
     }
     public short readWord(short addr){
         return readWord(uWord(addr));
@@ -37,7 +37,7 @@ public class Memory {
         memory[uWord((short)addr)] = value;
     }
     public void writeWord(short value, int addr) {
-        write((byte)(value & 0xff), addr);
-        write((byte)(value >> 8), addr + 1);
+        write(BitTwiddling.lowByteOf(value), addr);
+        write(BitTwiddling.highByteOf(value), addr + 1);
     }
 }

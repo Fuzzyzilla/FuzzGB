@@ -4,6 +4,16 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+//ATOMIC OPERATIONS:
+//* Load 8-bit immediate
+//* Load 16-bit immediate
+//* Load a,b,c,d,e,h,l
+//* Store a,b,c,d,e,h,l
+//* Store SP
+//* Load SP
+//* DEC a,b,c,d,e,h,l
+//* DEC BC,DE,HL,SP
+//* INC BD,DE,HL,SP,nn
 public class Z80OpCodes {
     private static BiConsumer<CPUState, Memory> opcodes[] = new BiConsumer[255];
     static {
@@ -100,7 +110,8 @@ public class Z80OpCodes {
         };
         //Two byte opcodes:
         opcodes[0xcb] = (CPUState c, Memory m) -> {
-
+            //TODO:
+            c.pc += 2;
         };
         //CALL nn
         opcodes[0xCD] = (CPUState c, Memory m) -> {
@@ -126,6 +137,7 @@ public class Z80OpCodes {
 
     public static void execute(CPUState c, Memory m) {
         int instr = Byte.toUnsignedInt(m.read(c.pc));
+        System.out.println("instr " + Integer.toHexString(instr));
         opcodes[instr].accept(c, m);
     }
 }

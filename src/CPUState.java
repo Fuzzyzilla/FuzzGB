@@ -1,5 +1,7 @@
 public class CPUState {
-    public static byte F_ZERO = (byte)0x80;
+    public static final byte F_ZERO = (byte)0x80;
+    public static final int REG_A = 0, REG_B = 1, REG_C = 2, REG_D = 3, REG_E = 4,REG_H = 5, REG_L = 6, REG_F = 7,
+            REG_PC = 8, REG_SP = 9, REG_BC = 10, REG_DE = 11, REG_HL = 12;
 
     public byte a, b, c, d, e, h, l, f;
     public short pc, sp;
