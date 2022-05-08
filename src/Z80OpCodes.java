@@ -1,11 +1,18 @@
 import java.beans.beancontext.BeanContextServiceProviderBeanInfo;
+import java.util.Arrays;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class Z80OpCodes {
-    private static BiConsumer<CPUState, Memory> opcodes[] = new BiConsumer<>[255];
+    private static BiConsumer<CPUState, Memory> opcodes[] = new BiConsumer[255];
     static {
+        BiConsumer<CPUState, Memory> unsupportedOp = (CPUState c, Memory m) -> {
+            System.out.println("Unknown opcode " + Integer.toHexString(m.read(c.pc)) + " @ " + c.pc);
+        };
+
+        Arrays.fill(opcodes, unsupportedOp);
+
         //NOP
         opcodes[0x00] = (CPUState c, Memory m) -> {
             c.pc++;
@@ -56,8 +63,8 @@ public class Z80OpCodes {
         };
         //LD HL, nn
         opcodes[0x21] = (CPUState c, Memory m) -> {
-            c.h = m.read(c.pc + 1);
-            c.l = m.read(c.pc + 2);
+            c.l = m.read(c.pc + 1);
+            c.h = m.read(c.pc + 2);
             c.pc += 3;
         };
         //LD SP, nn
@@ -115,5 +122,10 @@ public class Z80OpCodes {
         opcodes[0xfe] = (CPUState c, Memory m) -> {
             //TODO:
         };
+    }
+
+    public static void execute(CPUState c, Memory m) {
+        int instr = Byte.toUnsignedInt(m.read(c.pc));
+        opcodes[instr].accept(c, m);
     }
 }
