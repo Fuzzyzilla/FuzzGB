@@ -10,10 +10,10 @@ public class CPUState {
         f = 0;
     }
     public short getBC() {
-        return (short)(b << 8 | c);
+        return BitTwiddling.glue(b, c);
     }
     public short getDE() {
-        return (short)(d << 8 | e);
+        return BitTwiddling.glue(d, e);
     }
     public void incDE() {
         e++;
@@ -21,7 +21,7 @@ public class CPUState {
             d++;
     }
     public short getHL() {
-        return (short)(h << 8 | l);
+        return BitTwiddling.glue(h, l);
     }
     public void decHL() {
         l--;

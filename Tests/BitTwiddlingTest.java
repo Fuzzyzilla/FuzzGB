@@ -39,8 +39,8 @@ class BitTwiddlingTest {
 
     @Test
     void glue() {
-        assertEquals((short)0x0000, BitTwiddling.glue((byte)0, (byte)0));
-        assertEquals((short)0xff00, BitTwiddling.glue((byte)0xff, (byte)0));
+        assertEquals((short)0x0000, BitTwiddling.glue((byte)0x00, (byte)0x00));
+        assertEquals((short)0xff00, BitTwiddling.glue((byte)0xff, (byte)0x00));
         assertEquals((short)0x00ff, BitTwiddling.glue((byte)0x00, (byte)0xff));
         assertEquals((short)0xabcd, BitTwiddling.glue((byte)0xab, (byte)0xcd));
         assertEquals((short)0x1234, BitTwiddling.glue((byte)0x12, (byte)0x34));
